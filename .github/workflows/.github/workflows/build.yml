@@ -1,0 +1,29 @@
+name: Build nx2android
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configurar Java e Python
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar dependencias Python
+        run: |
+          python3 -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Verificar estrutura do projeto
+        run: |
+          ls -la
+          ls -la porter/ packaging/ || true
